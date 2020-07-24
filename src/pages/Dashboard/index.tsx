@@ -1,5 +1,6 @@
 import React, { useState, FormEvent, useEffect } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
@@ -50,41 +51,38 @@ const Dashboard: React.FC = () => {
     }
 
     return (
-        <>
-            <img src={logoImg} alt="Github Explorer" />
-            <Title>Explore repositórios no Github</Title>
+      <>
+        <img src={logoImg} alt="Github Explorer" />
+        <Title>Explore repositórios no Github</Title>
 
-            <Form 
-                hasError={!!inputError}
-                onSubmit={handleAddRepository}>
-                <input 
-                    value={newRepo}
-                    onChange={(e):void => setNewRepo(e.target.value)}
-                    placeholder="Digite o nome do repositório"></input>
-                <button type="submit">Pesquisar</button>
-            </Form>
+        <Form hasError={!!inputError} onSubmit={handleAddRepository}>
+          <input
+            value={newRepo}
+            onChange={(e): void => setNewRepo(e.target.value)}
+            placeholder="Digite o nome do repositório"
+          ></input>
+          <button type="submit">Pesquisar</button>
+        </Form>
 
-            { inputError  &&             
-                <Error>{inputError}</Error>
-            }
+        {inputError && <Error>{inputError}</Error>}
 
-            <Repositories>
-                {repositories.map(repository => (
-                    <a key={repository.full_name} href="teste">
-                        <img 
-                            src={repository.owner.avatar_url} 
-                            alt={repository.owner.login}/>
-                        <div>
-                            <strong>{repository.full_name}</strong>
-                            <p>{repository.description}</p>
-                        </div>
-                        <FiChevronRight size={20}/>
-                    </a>           
-                 ))}
-                           
-            </Repositories>
-        </>
-    )
+        <Repositories>
+          {repositories.map((repository) => (
+            <Link key={repository.full_name} to={`/repository/${repository.full_name}`}>
+              <img
+                src={repository.owner.avatar_url}
+                alt={repository.owner.login}
+              />
+              <div>
+                <strong>{repository.full_name}</strong>
+                <p>{repository.description}</p>
+              </div>
+              <FiChevronRight size={20} />
+            </Link>
+          ))}
+        </Repositories>
+      </>
+    );
 }
 
 export default Dashboard;
